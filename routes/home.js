@@ -7,5 +7,11 @@ router.get('/home',(req,res)=>{
 })
 
 router.use('/auth',require('./auth'))
-
+router.use('/dashboard',require('./dashboard'))
+router.use('/logout', (req, res, next)=> {
+    req.logout((err)=> {
+      if (err) { return next(err); }
+      res.redirect('/home');
+    });
+  })
 module.exports=router;
