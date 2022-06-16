@@ -1,16 +1,18 @@
 const express=require('express');
 const toDoZApp = express();
+const bodyParser = require("body-parser");
 const cookieParser =require('cookie-parser');
-
 const flash = require('connect-flash');
 const mongoose=require('mongoose');
 const passport=require('passport');
 const session = require('express-session');
 const MongoStore = require('connect-mongo')
 
+
 require('app-module-path').addPath(__dirname);
 require('dotenv').config();
 mongoose.connect('mongodb://127.0.0.1:27017/todozlist');
+//toDoZApp.use(bodyParser.urlencoded({extended : true}));
 toDoZApp.use(express.urlencoded({extended : false}));
 toDoZApp.use(express.static(__dirname + '/public'));
 toDoZApp.set('view engine','ejs');
@@ -24,6 +26,7 @@ toDoZApp.use(session({
 }))
 toDoZApp.use(flash());
 
+
 require('./passport/passport-local');
 toDoZApp.use(passport.initialize());
 toDoZApp.use(passport.session());
@@ -35,4 +38,5 @@ toDoZApp.use((req,res,next)=>{
 })
 
 toDoZApp.use('/',require('./routes/home'));
+
 toDoZApp.listen(5000,()=>{console.log('hello todoz follower')});
